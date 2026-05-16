@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,9 +29,10 @@ import java.util.UUID;
 class AuthSecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/register"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register").permitAll()
                         .anyRequest().authenticated())
@@ -90,9 +90,8 @@ class AuthSecurityConfig {
     }
 
     @Bean
-    ApplicationRunner userRunner(UserDetailsManager  userDetailsManager){
+    ApplicationRunner userRunner(UserDetailsManager userDetailsManager){
         return _ -> {
-
             var users = Map.of(
                     "xane", "pass",
                     "sim", "pass",
