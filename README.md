@@ -67,7 +67,7 @@ The services are intentionally separate so they can be developed, tested, and de
 
 ## Prerequisites
 
-- Java 25
+- Java 21
 - Maven Wrapper or Maven
 - PostgreSQL
 - SMTP credentials for mail delivery
@@ -92,9 +92,9 @@ PostgreSQL connection defaults used by the services point to `jdbc:postgresql://
 
 ## Running Locally
 You will need a PostgreSQL database running for the application. Best way to do this is to run a container using Docker / Podman and configuring your environment variables. By default the application expects the container on port 5432 with the following config:
-Database name -> db
-Username -> user
-Password -> pass
+- Database name: `db`
+- Username: `user`
+- Password: `pass`
 
 
 Start the services in this order (to prevent unnecessary errors):
@@ -132,9 +132,10 @@ Contributions are welcome. If you are planning a larger change, open an issue fi
 
 1. Fork the repository.
 2. Create a feature branch from `master`.
-3. Make the smallest focused change that solves the problem.
-4. Run the relevant service tests before opening a pull request.
-5. Open a pull request with a clear description of the change and any setup or verification steps.
+   Example: git checkout -b fix/your-issue-name
+4. Make the smallest focused change that solves the problem.
+5. Run the relevant service tests before opening a pull request.
+6. Open a pull request with a clear description of the change and any setup or verification steps.
 
 ### What I look for
 
