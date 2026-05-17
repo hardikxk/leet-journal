@@ -13,6 +13,8 @@ import org.springframework.web.servlet.function.ServerResponse;
 import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
 import static org.springframework.web.servlet.function.RouterFunctions.route;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @SpringBootApplication
 public class GatewayApplication {
 
@@ -22,9 +24,9 @@ public class GatewayApplication {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    RouterFunction<ServerResponse> backendRoutes(){
-        return route ()
-                .before(BeforeFilterFunctions.uri("http://localhost:8001/"))
+    RouterFunction<ServerResponse> backendRoutes(@Value("${app.routing.problems-service-uri}") String problemsUri) {
+        return route()
+                .before(BeforeFilterFunctions.uri(problemsUri))
                 .before(BeforeFilterFunctions.rewritePath("/problems/", "/"))
                 .filter(TokenRelayFilterFunctions.tokenRelay())
                 .GET("/problems/**", http())
@@ -32,9 +34,9 @@ public class GatewayApplication {
     }
 
     @Bean
-    RouterFunction<ServerResponse> mailRoute(){
-        return route ()
-                .before(BeforeFilterFunctions.uri("http://localhost:8002/"))
+    RouterFunction<ServerResponse> mailRoute(@Value("${app.routing.mail-service-uri}") String mailUri) {
+        return route()
+                .before(BeforeFilterFunctions.uri(mailUri))
                 .before(BeforeFilterFunctions.rewritePath("/mail/", "/"))
                 .filter(TokenRelayFilterFunctions.tokenRelay())
                 .GET("/mail/**", http())
@@ -42,9 +44,9 @@ public class GatewayApplication {
     }
 
     @Bean
-    RouterFunction<ServerResponse> aiRoute(){
-        return route ()
-                .before(BeforeFilterFunctions.uri("http://localhost:8003/"))
+    RouterFunction<ServerResponse> aiRoute(@Value("${app.routing.ai-service-uri}") String aiUri) {
+        return route()
+                .before(BeforeFilterFunctions.uri(aiUri))
                 .before(BeforeFilterFunctions.rewritePath("/ai/", "/"))
                 .filter(TokenRelayFilterFunctions.tokenRelay())
                 .GET("/ai/**", http())
@@ -52,9 +54,9 @@ public class GatewayApplication {
     }
 
     @Bean
-    RouterFunction<ServerResponse> executionRoute(){
-        return route ()
-                .before(BeforeFilterFunctions.uri("http://localhost:8001/"))
+    RouterFunction<ServerResponse> executionRoute(@Value("${app.routing.problems-service-uri}") String problemsUri) {
+        return route()
+                .before(BeforeFilterFunctions.uri(problemsUri))
                 .before(BeforeFilterFunctions.rewritePath("/code/", "/"))
                 .filter(TokenRelayFilterFunctions.tokenRelay())
                 .GET("/code/**", http())
