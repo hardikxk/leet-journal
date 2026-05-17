@@ -6,6 +6,7 @@ import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.infrastructure.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
@@ -34,17 +35,26 @@ public class BatchConfig {
                         fieldSet.readString("acceptance"),
                         fieldSet.readString("difficulty")
                 ))
-                .linesToSkip(1402)
+                .linesToSkip(1) // skip header
                 .build();
     }
 
     @Bean
-    Step step1(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, FlatFileItemReader<Problem> flatFileItemReader, JdbcBatchItemWriter<Problem> jdbcBatchItemWriter) {
+    Step step1(JobRepository jobRepository,
+        PlatformTransactionManager platformTransactionManager,
+        FlatFileItemReader<Problem> flatFileItemReader,
+        ItemProcessor<Problem, Problem> processor,
+        JdbcBatchItemWriter<Problem> jdbcBatchItemWriter) {
+
         return new StepBuilder("step1", jobRepository)
                 .<Problem, Problem>chunk(10)
                 .transactionManager(platformTransactionManager)
                 .reader(flatFileItemReader)
+                .processor(processor)
                 .writer(jdbcBatchItemWriter)
+                .faultTolerant()
+                .skipLimit(50)
+                .skip(Exception.class)
                 .build();
     }
 
@@ -63,10 +73,11 @@ public class BatchConfig {
     }
 
     @Bean
-    Job job(JobRepository jobRepository, Step step1) {
+    Job job(JobRepository jobRepository, Step step1,ProblemJobListener jobListener) {
         return new JobBuilder("problemEtlJob", jobRepository)
                 .start(step1)
                 .incrementer(new RunIdIncrementer())
+                .listener(jobListener)
                 .build();
     }
 }
