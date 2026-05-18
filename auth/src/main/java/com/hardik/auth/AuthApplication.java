@@ -17,7 +17,7 @@ public class AuthApplication {
     ApplicationListener<AuthenticationSuccessEvent> authSuccess() {
         return (auth) -> {
             var res = auth.getAuthentication();
-            IO.println("Logged in as: " + res.getName() + " Type: "  + res.getClass().getSimpleName());
+            System.out.println("Logged in as: " + res.getName() + " Type: "  + res.getClass().getSimpleName());
         };
     }
 
