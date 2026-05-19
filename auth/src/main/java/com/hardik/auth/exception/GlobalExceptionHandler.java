@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception ex) {
-        return new ResponseEntity<>(
-                ex.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR
+    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorResponse errorResponse = new ErrorResponse(
+                status.value(),
+                ex.getMessage()
         );
+        return new ResponseEntity<>(errorResponse, status);
     }
 }
