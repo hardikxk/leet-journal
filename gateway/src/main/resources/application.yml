@@ -18,11 +18,9 @@ spring:
         provider:
           authserver:
             issuer-uri: ${AUTH_SERVER_URI:http://localhost:8000}
-app:
-  routing:
-    problems-service-uri: ${PROBLEMS_SERVICE_URI:http://localhost:8001/}
-    mail-service-uri: ${MAIL_SERVICE_URI:http://localhost:8002/}
-    ai-service-uri: ${AI_SERVICE_URI:http://localhost:8003/}
+PROBLEMS_SERVICE_URI: ${PROBLEMS_SERVICE_URI:http://localhost:8001/}
+MAIL_SERVICE_URI: ${MAIL_SERVICE_URI:http://localhost:8002/}
+AI_SERVICE_URI: ${AI_SERVICE_URI:http://localhost:8003/}
 logging:
   level:
     root: INFO

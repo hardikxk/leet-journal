@@ -24,7 +24,7 @@ public class GatewayApplication {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    RouterFunction<ServerResponse> backendRoutes(@Value("${app.routing.problems-service-uri}") String problemsUri) {
+    RouterFunction<ServerResponse> backendRoutes(@Value("${PROBLEMS_SERVICE_URI}") String problemsUri) {
         return route()
                 .before(BeforeFilterFunctions.uri(problemsUri))
                 .before(BeforeFilterFunctions.rewritePath("/problems/", "/"))
@@ -34,7 +34,7 @@ public class GatewayApplication {
     }
 
     @Bean
-    RouterFunction<ServerResponse> mailRoute(@Value("${app.routing.mail-service-uri}") String mailUri) {
+    RouterFunction<ServerResponse> mailRoute(@Value("${MAIL_SERVICE_URI}") String mailUri) {
         return route()
                 .before(BeforeFilterFunctions.uri(mailUri))
                 .before(BeforeFilterFunctions.rewritePath("/mail/", "/"))
@@ -44,7 +44,7 @@ public class GatewayApplication {
     }
 
     @Bean
-    RouterFunction<ServerResponse> aiRoute(@Value("${app.routing.ai-service-uri}") String aiUri) {
+    RouterFunction<ServerResponse> aiRoute(@Value("${AI_SERVICE_URI}") String aiUri) {
         return route()
                 .before(BeforeFilterFunctions.uri(aiUri))
                 .before(BeforeFilterFunctions.rewritePath("/ai/", "/"))
@@ -54,7 +54,7 @@ public class GatewayApplication {
     }
 
     @Bean
-    RouterFunction<ServerResponse> executionRoute(@Value("${app.routing.problems-service-uri}") String problemsUri) {
+    RouterFunction<ServerResponse> executionRoute(@Value("${PROBLEMS_SERVICE_URI}") String problemsUri) {
         return route()
                 .before(BeforeFilterFunctions.uri(problemsUri))
                 .before(BeforeFilterFunctions.rewritePath("/code/", "/"))
