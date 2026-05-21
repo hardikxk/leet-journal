@@ -19,10 +19,6 @@ public class ProblemService {
         return problemRepository.findAll();
     }
     public Problem findProblem(int id){
-        return problemRepository.findAll().stream().filter(
-                p -> p.id() == id
-        )
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Problem not found!"));
+        return problemRepository.findById(id).orElse(null);
     }
 }

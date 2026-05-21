@@ -2,6 +2,7 @@ package com.hardik.problemsservice.controller;
 
 import com.hardik.problemsservice.model.Problem;
 import com.hardik.problemsservice.service.ProblemService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +44,10 @@ public class ProblemController {
     }
 
     @GetMapping("/find/{id}")
-    Problem findById(@PathVariable int id) {
-        return problemService.findProblem(id);
+    ResponseEntity<Problem> findById(@PathVariable int id)
+    {   Problem problem = problemService.findProblem(id);
+        if(problem == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(problem);
     }
 }
