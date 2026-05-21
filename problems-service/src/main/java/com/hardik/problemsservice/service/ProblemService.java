@@ -2,6 +2,7 @@ package com.hardik.problemsservice.service;
 
 import com.hardik.problemsservice.model.Problem;
 import com.hardik.problemsservice.repository.ProblemRepository;
+import org.apache.el.stream.Optional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,10 @@ public class ProblemService {
     public List<Problem> findAll() {
         return problemRepository.findAll();
     }
-    public Problem findProblem(int id){
+    public Optional<Problem> findProblem(int id){
         return problemRepository.findAll().stream().filter(
                 p -> p.id() == id
         )
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Problem not found!"));
+                .findFirst();
     }
 }
