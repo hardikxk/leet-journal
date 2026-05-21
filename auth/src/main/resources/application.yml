@@ -13,3 +13,5 @@ spring:
 logging:
   level:
     org.springframework.security: TRACE
+  pattern:
+    console: "[%X{requestId}] %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
