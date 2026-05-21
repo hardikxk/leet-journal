@@ -2,6 +2,8 @@ package com.hardik.problemsservice.service;
 
 import com.hardik.problemsservice.model.Problem;
 import com.hardik.problemsservice.repository.ProblemRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +20,13 @@ public class ProblemService {
     public List<Problem> findAll() {
         return problemRepository.findAll();
     }
+
+    public Page<Problem> findAllPaginated(Pageable pageable) {
+        return problemRepository.findAll(pageable);
+    }
+
     public Problem findProblem(int id){
-        return problemRepository.findAll().stream().filter(
-                p -> p.id() == id
-        )
-                .findFirst()
+        return problemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Problem not found!"));
     }
 }
