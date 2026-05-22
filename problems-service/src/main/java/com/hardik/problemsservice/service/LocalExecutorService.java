@@ -22,18 +22,28 @@ public class LocalExecutorService {
             pb.redirectErrorStream(true);
             Process process = pb.start();
 
-            String output = new String(process.getInputStream().readAllBytes());
+            java.util.concurrent.CompletableFuture<String> outputFuture = java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+                try {
+                    return new String(process.getInputStream().readAllBytes());
+                } catch (Exception e) {
+                    return "";
+                }
+            });
 
-            process.waitFor();
+            boolean finished = process.waitFor(5, java.util.concurrent.TimeUnit.SECONDS);
+            if (!finished) {
+                process.destroyForcibly();
+                return "Execution Failed : Timeout exceeded";
+            }
 
-            return output;
+            return outputFuture.get();
         }
         catch(Exception e){
             return "Execution Failed : \n" + e.getMessage();
         }
         finally {
             if (tempFile != null) {
-                IO.println(tempFile.toFile().delete());
+                System.out.println("Deleted temp file: " + tempFile.toFile().delete());
             }
         }
 
