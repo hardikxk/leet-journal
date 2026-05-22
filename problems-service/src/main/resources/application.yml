@@ -10,7 +10,7 @@ spring:
           issuer-uri: http://localhost:8000
   datasource:
     url: jdbc:postgresql://localhost:5432/db
-    username: user
+    username: postgres
     password: pass
   sql:
     init:
