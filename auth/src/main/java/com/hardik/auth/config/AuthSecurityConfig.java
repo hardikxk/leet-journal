@@ -24,23 +24,32 @@ import javax.sql.DataSource;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.http.MediaType;
 
 @Configuration
 @EnableWebSecurity
 class AuthSecurityConfig {
 
     @Bean
-    @org.springframework.core.annotation.Order(1)
+    @Order(1)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer.class)
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                new OAuth2AuthorizationServerConfigurer();
+        http.with(authorizationServerConfigurer, Customizer.withDefaults());
+
+        authorizationServerConfigurer
             .oidc(Customizer.withDefaults());
 
         http
+            .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
             .exceptionHandling((exceptions) -> exceptions
                 .defaultAuthenticationEntryPointFor(
-                    new org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint("/login"),
-                    new org.springframework.security.web.util.matcher.MediaTypeRequestMatcher(org.springframework.http.MediaType.TEXT_HTML)
+                    new LoginUrlAuthenticationEntryPoint("/login"),
+                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                 )
             )
             .oauth2ResourceServer((resourceServer) -> resourceServer
@@ -50,7 +59,7 @@ class AuthSecurityConfig {
     }
 
     @Bean
-    @org.springframework.core.annotation.Order(2)
+    @Order(2)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
