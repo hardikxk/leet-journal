@@ -1,14 +1,16 @@
 package com.hardik.problemsservice.controller;
 
+import com.hardik.problemsservice.dto.PageResponse;
 import com.hardik.problemsservice.model.Problem;
 import com.hardik.problemsservice.service.ProblemService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -38,8 +40,8 @@ public class ProblemController {
     }
 
     @GetMapping("/all")
-    List<Problem> findAll() {
-        return problemService.findAll();
+    public PageResponse<Problem> findAll(@PageableDefault(size=20) Pageable pageable) {
+        return problemService.findAll(pageable);
     }
 
     @GetMapping("/find/{id}")
