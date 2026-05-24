@@ -15,3 +15,6 @@ spring:
   sql:
     init:
       mode: always
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%X{X-Correlation-ID}] - %msg%n"
