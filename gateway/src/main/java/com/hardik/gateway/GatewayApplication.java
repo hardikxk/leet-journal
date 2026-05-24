@@ -9,6 +9,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
+import org.springframework.cloud.gateway.server.mvc.filter.RateLimitFilterFunctions;
 
 import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
 import static org.springframework.web.servlet.function.RouterFunctions.route;
@@ -47,6 +48,10 @@ public class GatewayApplication {
                 .before(BeforeFilterFunctions.uri("http://localhost:8003/"))
                 .before(BeforeFilterFunctions.rewritePath("/ai/", "/"))
                 .filter(TokenRelayFilterFunctions.tokenRelay())
+                .filter(RateLimitFilterFunctions
+                        .requestRateLimiter(c -> c.setReplenishRate(5)
+                                .setBurstCapacity(5)
+                                .setRequestedTokens(1)))
                 .GET("/ai/**", http())
                 .build();
     }
