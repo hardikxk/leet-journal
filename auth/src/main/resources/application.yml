@@ -5,7 +5,7 @@ spring:
     name: auth
   datasource:
     url: jdbc:postgresql://localhost:5432/db
-    username: postgres
+    username: user
     password: pass
   sql:
     init:
