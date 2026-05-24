@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class LocalExecutorService {
 
@@ -21,12 +23,14 @@ public class LocalExecutorService {
             ProcessBuilder pb = new ProcessBuilder("java",  tempFile.toString());
             pb.redirectErrorStream(true);
             Process process = pb.start();
+            boolean completed = process.waitFor(5, TimeUnit.SECONDS);
 
-            String output = new String(process.getInputStream().readAllBytes());
+            if (!completed) {
+                process.destroyForcibly();
+                return "Execution timed out";
+            }
 
-            process.waitFor();
-
-            return output;
+            return new String(process.getInputStream().readAllBytes());
         }
         catch(Exception e){
             return "Execution Failed : \n" + e.getMessage();
