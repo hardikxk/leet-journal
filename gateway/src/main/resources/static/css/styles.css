@@ -1,0 +1,104 @@
+/* Theme Tokens */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --accent: #6366f1;
+  --border: #e2e8f0;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #090d16;
+  --bg-secondary: #111827;
+  --text-primary: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --accent: #818cf8;
+  --border: #374151;
+}
+
+/* Base Styles */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  height: 100vh;
+}
+
+/* Layout */
+.app-container { display: flex; flex-direction: column; height: 100%; }
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-section { display: flex; align-items: center; gap: 0.5rem; }
+.logo-icon {
+  width: 32px; height: 32px;
+  background: var(--accent);
+  color: white;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+}
+
+.header-actions { display: flex; align-items: center; gap: 1rem; }
+
+/* Short Minimal Theme Toggle */
+.theme-toggle-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+.theme-icon-sun, .theme-icon-moon { position: absolute; transition: transform 0.3s ease, opacity 0.3s ease; }
+[data-theme="light"] .theme-icon-sun { transform: scale(1); opacity: 1; }
+[data-theme="light"] .theme-icon-moon { transform: scale(0); opacity: 0; }
+[data-theme="dark"] .theme-icon-sun { transform: scale(0); opacity: 0; }
+[data-theme="dark"] .theme-icon-moon { transform: scale(1); opacity: 1; }
+
+.user-badge { display: flex; align-items: center; gap: 0.5rem; }
+.user-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+}
+
+/* Dashboard Grid */
+.dashboard-grid { display: grid; grid-template-columns: 280px 1fr; flex: 1; overflow: hidden; }
+.panel { display: flex; flex-direction: column; border-right: 1px solid var(--border); overflow: hidden; background: var(--bg-secondary); }
+.panel-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+.panel-body { padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; flex: 1; overflow-y: auto; }
+
+/* Problem Cards */
+.search-input { width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); }
+.problem-list { display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; }
+.problem-card { padding: 0.5rem; border-radius: 6px; background: var(--bg-primary); cursor: pointer; border: 1px solid transparent; }
+.problem-card:hover { border-color: var(--accent); }
+.problem-card.active { border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
+
+/* Editor & Console */
+.editor-panel { border-right: none; }
+.problem-details-pane { padding: 1rem; border-bottom: 1px solid var(--border); }
+.editor-workspace { flex: 1; display: flex; background: #1e1e2e; }
+.code-textarea { flex: 1; background: transparent; border: none; color: #cdd6f4; font-family: monospace; font-size: 0.85rem; padding: 1rem; resize: none; outline: none; }
+.console-panel { height: 120px; background: rgba(0, 0, 0, 0.2); border-top: 1px solid var(--border); display: flex; flex-direction: column; }
+.console-header { padding: 0.4rem 1rem; font-size: 0.75rem; background: rgba(0,0,0,0.1); border-bottom: 1px solid var(--border); }
+.console-output { flex: 1; padding: 0.5rem 1rem; font-family: monospace; font-size: 0.8rem; color: #34d399; }
