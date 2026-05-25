@@ -1,5 +1,6 @@
 package com.hardik.problemsservice.controller;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import com.hardik.problemsservice.model.Problem;
 import com.hardik.problemsservice.service.ProblemService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,6 +50,14 @@ public class ProblemController {
 
     @GetMapping("/title/{title}")
     Problem findByTitle(@PathVariable String title) {
-        return problemService.findProblemByTitle(title);
+
+    if (title == null || title.trim().isEmpty()) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Title cannot be empty"
+        );
     }
+
+    return problemService.findProblemByTitle(title.trim());
+}
 }
