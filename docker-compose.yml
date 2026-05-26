@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  # 1. The Database
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: leet-journal-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - leet-net
+
+  # 2. Authentication Server
+  auth-service:
+    build:
+      context: ./auth
+    container_name: auth-service
+    ports:
+      - "8000:8000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - leet-net
+
+  # 3. Problems Service
+  problems-service:
+    build:
+      context: ./problems-service
+    container_name: problems-service
+    ports:
+      - "8001:8001"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      AUTH_SERVER_URI: http://auth-service:8000
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - leet-net
+
+  # 4. Mail Service
+  mail-service:
+    build:
+      context: ./mail-service
+    container_name: mail-service
+    ports:
+      - "8002:8002"
+    environment:
+      GMAIL_MAIL_USERNAME: ${GMAIL_MAIL_USERNAME}
+      GMAIL_MAIL_PASSWORD: ${GMAIL_MAIL_PASSWORD}
+    networks:
+      - leet-net
+
+  # 5. AI Service
+  ai-service:
+    build:
+      context: ./ai-service
+    container_name: ai-service
+    ports:
+      - "8003:8003"
+    environment:
+      GOOGLE_GENAI_API_KEY: ${GOOGLE_GENAI_API_KEY}
+    networks:
+      - leet-net
+
+  # 6. API Gateway (The Entry point)
+  gateway-service:
+    build:
+      context: ./gateway
+    container_name: gateway-service
+    ports:
+      - "9000:9000"
+    environment:
+      AUTH_SERVER_URI: http://auth-service:8000
+      PROBLEMS_SERVICE_URI: http://problems-service:8001
+      MAIL_SERVICE_URI: http://mail-service:8002
+      AI_SERVICE_URI: http://ai-service:8003
+    depends_on:
+      auth-service:
+        condition: service_started
+    networks:
+      - leet-net
+
+networks:
+  leet-net:
+    driver: bridge
