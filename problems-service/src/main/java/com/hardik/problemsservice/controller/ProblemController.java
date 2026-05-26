@@ -2,14 +2,13 @@ package com.hardik.problemsservice.controller;
 
 import com.hardik.problemsservice.model.Problem;
 import com.hardik.problemsservice.service.ProblemService;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class ProblemController {
@@ -26,11 +25,7 @@ public class ProblemController {
     }
 
     @GetMapping("/me")
-    String me() {
-        var jwt = (Jwt) Objects.requireNonNull(SecurityContextHolder
-                        .getContext()
-                        .getAuthentication())
-                        .getPrincipal();
+    String me(@AuthenticationPrincipal Jwt jwt) {
         if (jwt == null) {
             return "No user authentication found!";
         }
