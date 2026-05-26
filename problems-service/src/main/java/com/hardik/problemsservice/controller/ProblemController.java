@@ -46,4 +46,9 @@ public class ProblemController {
     Problem findById(@PathVariable int id) {
         return problemService.findProblem(id);
     }
+
+    @GetMapping("/title/{title}")
+    Problem findByTitle(@PathVariable String title) {
+        return problemService.findProblemByTitle(title);
+    }
 }
