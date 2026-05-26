@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leet Journal</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo-section">
+        <div class="logo-icon">L</div>
+        <h1>Leet Journal</h1>
+      </div>
+      
+      <div class="header-actions">
+        <!-- Minimal Theme Toggle Button -->
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-sun"></i>
+          <i data-lucide="moon" class="theme-icon-moon"></i>
+        </button>
+        <div class="user-badge">
+          <div class="user-avatar">D</div>
+          <span>Developer</span>
+        </div>
+      </div>
+    </header>
+    
+    <main class="dashboard-grid">
+      <!-- Sidebar Explorer -->
+      <aside class="panel">
+        <div class="panel-header">
+          <h2>Problems Explorer</h2>
+        </div>
+        <div class="panel-body">
+          <input type="text" id="problem-search" class="search-input" placeholder="Search problems...">
+          <div class="problem-list" id="problems-container"></div>
+        </div>
+      </aside>
+      
+      <!-- Workspace -->
+      <section class="panel editor-panel">
+        <div class="problem-details-pane">
+          <h2 id="active-problem-title">Select a Problem</h2>
+          <p id="active-problem-desc">Pick an exercise to begin local code run.</p>
+        </div>
+        <div class="editor-workspace">
+          <textarea class="code-textarea" id="editor-textarea" spellcheck="false"></textarea>
+        </div>
+        <div class="console-panel">
+          <div class="console-header">Console Output</div>
+          <div class="console-output" id="console-output">Select problem to run...</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
