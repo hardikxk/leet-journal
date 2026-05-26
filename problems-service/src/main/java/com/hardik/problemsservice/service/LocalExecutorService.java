@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LocalExecutorService {
@@ -22,9 +23,13 @@ public class LocalExecutorService {
             pb.redirectErrorStream(true);
             Process process = pb.start();
 
-            String output = new String(process.getInputStream().readAllBytes());
+            boolean finished = process.waitFor(30, TimeUnit.SECONDS);
+            if (!finished) {
+                process.destroyForcibly();
+                return "Execution Failed : \nExecution timed out after 30 seconds.";
+            }
 
-            process.waitFor();
+            String output = new String(process.getInputStream().readAllBytes());
 
             return output;
         }
@@ -33,7 +38,7 @@ public class LocalExecutorService {
         }
         finally {
             if (tempFile != null) {
-                IO.println(tempFile.toFile().delete());
+                System.out.println(tempFile.toFile().delete());
             }
         }
 
