@@ -1,22 +1,18 @@
 package com.hardik.problemsservice.service;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class LocalExecutorService {
 
-    public String executeJava(){
+    public String executeJava(String userCode){ // This will accept user's code input
         Path tempFile = null;
         try{
-            Resource classPathResource = new ClassPathResource("BinarySearch.java");
             tempFile = Files.createTempFile("run-", ".java");
-            Files.copy(classPathResource.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
+            // User's code is written directly to the temporary file
+            Files.writeString(tempFile, userCode);
 
             ProcessBuilder pb = new ProcessBuilder("java",  tempFile.toString());
             pb.redirectErrorStream(true);
