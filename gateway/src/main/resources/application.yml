@@ -24,3 +24,5 @@ logging:
     org.springframework.web: INFO
     org.springframework.security: TRACE
     org.springframework.security.oauth2: INFO
+  pattern:
+    console: "[%X{requestId}] %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"

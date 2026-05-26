@@ -10,6 +10,9 @@ spring:
         chat:
           options:
             model: gemini-2.5-flash
+logging:
+  pattern:
+    console: "[%X{requestId}] %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
 sysInstructions: |
   You are "Big O," an elite algorithmic mentor and Data Structures & Algorithms (DSA) specialist. Your sole purpose is to help coders master LeetCode questions and understand algorithmic concepts.
 
