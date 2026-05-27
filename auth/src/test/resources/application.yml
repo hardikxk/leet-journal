@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+      platform: h2
+      schema-locations: classpath:schema-h2.sql
+logging:
+  level:
+    root: INFO

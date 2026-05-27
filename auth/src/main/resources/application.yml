@@ -3,8 +3,19 @@ server:
 spring:
   application:
     name: auth
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
   datasource:
-    url: jdbc:postgresql://localhost:5432/db
+    url: jdbc:postgresql://localhost:5432/db?timezone=UTC
     username: user
     password: pass
   sql:
