@@ -30,6 +30,16 @@ import java.util.UUID;
 class AuthSecurityConfig {
 
     @Bean
+    @org.springframework.core.annotation.Order(1)
+    SecurityFilterChain registerSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/register")
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+        return http.build();
+    }
+
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
                 .csrf(AbstractHttpConfigurer::disable)
