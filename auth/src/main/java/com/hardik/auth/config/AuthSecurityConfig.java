@@ -24,20 +24,48 @@ import javax.sql.DataSource;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.http.MediaType;
 
 @Configuration
 @EnableWebSecurity
 class AuthSecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    @Order(1)
+    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                new OAuth2AuthorizationServerConfigurer();
+        http.with(authorizationServerConfigurer, Customizer.withDefaults());
+
+        authorizationServerConfigurer
+            .oidc(Customizer.withDefaults());
+
+        http
+            .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+            .exceptionHandling((exceptions) -> exceptions
+                .defaultAuthenticationEntryPointFor(
+                    new LoginUrlAuthenticationEntryPoint("/login"),
+                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                )
+            )
+            .oauth2ResourceServer((resourceServer) -> resourceServer
+                .jwt(Customizer.withDefaults()));
+
+        return http.build();
+    }
+
+    @Bean
+    @Order(2)
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register").permitAll()
                         .anyRequest().authenticated())
-                .oauth2AuthorizationServer(asc -> asc
-                        .oidc(Customizer.withDefaults()))
                 .formLogin(Customizer.withDefaults());
 
         return http.build();
