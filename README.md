@@ -1,11 +1,11 @@
 # Leet Journal
-# GSSOC'26 contributors [read this first](https://github.com/hardikxk/leet-journal/discussions/30#discussion-10072805)
+> GSSOC'26 contributors [read this first](https://github.com/hardikxk/leet-journal/discussions/30#discussion-10072805)
 <img width="1080" height="1080" alt="image" src="https://github.com/user-attachments/assets/2b3f0211-f6c5-47bd-b664-72e0758318da" />
 
 
 Leet Journal is a Spring Boot microservices project for tracking LeetCode progress, managing problem metadata, authenticating users, sending mail, and experimenting with AI-assisted problem solving.
 
-## Overview
+## About The Project
 
 The repository is organized as a set of independently runnable services:
 
@@ -81,7 +81,8 @@ The current repository version is tracked in the root `VERSION` file.
 
 Common local defaults are defined in each service’s `application.yml` or `application.yaml` file.
 
-Environment variables used by the project include:
+
+### Environment Variables
 
 - `GMAIL_MAIL_USERNAME`
 - `GMAIL_MAIL_PASSWORD`
@@ -91,12 +92,15 @@ Environment variables used by the project include:
 PostgreSQL connection defaults used by the services point to `jdbc:postgresql://localhost:5432/db` with the username `user` and password `pass`.
 
 ## Running Locally
-You will need a PostgreSQL database running for the application. Best way to do this is to run a container using Docker / Podman and configuring your environment variables. By default the application expects the container on port 5432 with the following config:
+
+### Database Setup
+
+You will need a PostgreSQL database running for the application.Best way to do this is to run a container using Docker / Podman and configuring your environment variables. By default the application expects the container on port 5432 with the following config:
 Database name -> db
 Username -> user
 Password -> pass
 
-
+### Service Startup Order
 Start the services in this order (to prevent unnecessary errors):
 
 1. PostgreSQL Database (container or locally)
@@ -129,9 +133,6 @@ Repeat the same pattern for the other services.
 - [Contributing Guide](CONTRIBUTING.md)
 - [Project Setup Guide](SETUP.md)
 
-## Project Status
-This project is under active development and is intended to grow as an open source learning platform for LeetCode practice and DSA tooling.
-Contributions are welcome. If you are planning a larger change, open an issue first so the approach can be aligned before implementation.
 
 ### What I look for
 
@@ -140,7 +141,7 @@ Contributions are welcome. If you are planning a larger change, open an issue fi
 - Tests for new behavior when practical.
 - Documentation (future implementation) updates when behavior or setup changes.
 
-### Resources that can help you
+### Helpful Resources
 - The Spring Documentation.
 	- [Spring Authorization Server](https://docs.spring.io/spring-authorization-server/reference/index.html)
     - [Spring Cloud Gateway WebMVC](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-webmvc.html)
@@ -155,5 +156,5 @@ Contributions are welcome. If you are planning a larger change, open an issue fi
 - Avoid introducing unnecessary dependencies unless they materially improve the codebase.
 
 ## Project Status
-
 This project is under active development and is intended to grow as an open source learning platform for LeetCode practice and DSA tooling.
+Contributions are welcome. If you are planning a larger change, open an issue first so the approach can be aligned before implementation.
