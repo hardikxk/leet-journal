@@ -1,0 +1,61 @@
+name: Feature Request
+description: Suggest an idea for Leet Journal
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a feature!
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the feature
+      placeholder: I want to add...
+    validations:
+      required: true
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: Is your feature request related to a problem? Please describe
+      placeholder: I'm always frustrated when...
+    validations:
+      required: false
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How should this feature work?
+      placeholder: Here's how it could work...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Approaches
+      description: What alternatives have you considered?
+      placeholder: Another approach would be...
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions must be met for this to be complete?
+      placeholder: |
+        - [ ] Feature works in dev environment
+        - [ ] Tests pass
+        - [ ] Documentation updated
+    validations:
+      required: false
+  - type: checkboxes
+    id: gssoc
+    attributes:
+      label: GSSoC
+      options:
+        - label: I am a registered GSSoC 2026 contributor
+          required: false
+        - label: I would like to implement this feature myself
+          required: false
