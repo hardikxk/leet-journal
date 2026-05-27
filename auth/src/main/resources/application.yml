@@ -1,5 +1,6 @@
 server:
   port: 8000
+
 spring:
   application:
     name: auth
@@ -9,7 +10,8 @@ spring:
     password: pass
   sql:
     init:
-      mode: always
+      mode: ALWAYS
+
 logging:
   level:
     org.springframework.security: TRACE
