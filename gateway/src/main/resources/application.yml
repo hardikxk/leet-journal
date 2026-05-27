@@ -19,6 +19,8 @@ spring:
           authserver:
             issuer-uri: ${AUTH_SERVER_URI:http://localhost:8000}
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%X{X-Correlation-ID}] - %msg%n"
   level:
     root: INFO
     org.springframework.web: INFO
