@@ -25,16 +25,21 @@ public class ProblemController {
         return "Leet";
     }
 
-    @GetMapping("/me")
-    String me() {
-        var jwt = (Jwt) Objects.requireNonNull(SecurityContextHolder
-                        .getContext()
-                        .getAuthentication())
-                        .getPrincipal();
-        if (jwt == null) {
-            return "No user authentication found!";
-        }
-        return "ciao " + jwt.getSubject();
+   @GetMapping("/me")
+String me() {
+
+    var authentication = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
+
+    if (authentication == null || authentication.getPrincipal() == null) {
+        return "No user authentication found!";
+    }
+
+    var jwt = (Jwt) authentication.getPrincipal();
+
+    return "ciao " + jwt.getSubject();
+}
     }
 
     @GetMapping("/all")
