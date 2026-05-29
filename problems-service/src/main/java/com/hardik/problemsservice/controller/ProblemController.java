@@ -46,8 +46,8 @@ public class ProblemController {
 
     @GetMapping("/find/{id}")
     ResponseEntity<Problem> findById(@PathVariable int id) {
-        Problem prob=problemService.findProblem(id);
-        if(prob==null)
+        Problem prob =problemService.findProblem(id);
+        if(prob == null)
         {
             throw new IllegalArgumentException("Not found any Problem with this id");
         }
