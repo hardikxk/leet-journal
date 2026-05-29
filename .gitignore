@@ -1,0 +1,54 @@
+﻿# =========================
+# Java / Maven
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# IDE
+# =========================
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+.factorypath
+.springBeans
+.sts4-cache
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Environment
+# =========================
+.env
+.env.local
+.env.*.local
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Build
+# =========================
+build/
+dist/
+out/
