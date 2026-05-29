@@ -33,7 +33,9 @@ public class LocalExecutorService {
         }
         finally {
             if (tempFile != null) {
-                IO.println(tempFile.toFile().delete());
+                try {
+                    Files.deleteIfExists(tempFile);
+                } catch (Exception ignored) {}
             }
         }
 
