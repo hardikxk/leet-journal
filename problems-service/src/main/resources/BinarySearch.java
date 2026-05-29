@@ -2,10 +2,10 @@ public class BinarySearch {
 	public static void main(String[] args){
 		int res = algo(new int[]{2, 3, 5, 9, 11, 34}, 3);
 		if(res != -1){
-			IO.println("Target number found at index: " + res);
+			System.out.println("Target number found at index: " + res);
 		}
 		else{
-			IO.println("Number is not present in the array!!");
+			System.out.println("Number is not present in the array!!");
 		}
 	}
 	public static int algo(int[] arr, int k){
