@@ -5,11 +5,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 public class AuthApplication {
 
-    static void main(String[] args) {
+    private static final Logger log = LoggerFactory.getLogger(AuthApplication.class);
+
+    public static void main(String[] args) {
         SpringApplication.run(AuthApplication.class, args);
     }
 
@@ -17,7 +21,7 @@ public class AuthApplication {
     ApplicationListener<AuthenticationSuccessEvent> authSuccess() {
         return (auth) -> {
             var res = auth.getAuthentication();
-            IO.println("Logged in as: " + res.getName() + " Type: "  + res.getClass().getSimpleName());
+            log.info("Logged in as: {} Type: {}", res.getName(), res.getClass().getSimpleName());
         };
     }
 
