@@ -27,7 +27,9 @@ create table if not exists spring_session_attributes
 create table if not exists users
 (
     username varchar(200) not null primary key,
-    password varchar(500) not null,
+    password varchar(500) not null, -- Spring Security DelegatingPasswordEncoder format
+                                    -- e.g. {bcrypt}$2a$10$... (~68 chars)
+                                    -- 500 allows future algorithm migration (argon2, scrypt)
     enabled  boolean      not null
 );
 
