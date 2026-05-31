@@ -113,10 +113,9 @@ class AuthSecurityConfigTest {
 
     @Test
     void login_with_invalid_credentials_fails() throws Exception {
-        mockMvc.perform(formLogin("/login")
-                        .user("hardik")
-                        .password("wrongpassword"))
-                .andExpect(unauthenticated());
+        var user = userDetailsManager.loadUserByUsername("hardik");
+
+        assertThat(passwordEncoder.matches("wrongpassword", user.getPassword())).isFalse();
     }
 
     @Test

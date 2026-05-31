@@ -1,5 +1,11 @@
 package com.hardik.auth.config;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.sql.DataSource;
+
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +26,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.sql.DataSource;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 @Configuration
 @EnableWebSecurity
 class AuthSecurityConfig {
@@ -32,13 +33,14 @@ class AuthSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register").permitAll()
-                        .anyRequest().authenticated())
-                .oauth2AuthorizationServer(asc -> asc
-                        .oidc(Customizer.withDefaults()))
-                .formLogin(Customizer.withDefaults());
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/register").permitAll()
+                .anyRequest().authenticated())
+            .oauth2AuthorizationServer(asc -> asc
+                .oidc(Customizer.withDefaults()))
+            .formLogin(Customizer.withDefaults())
+            .oauth2Login(Customizer.withDefaults());
 
         return http.build();
     }
