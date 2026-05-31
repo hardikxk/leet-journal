@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in | Leet Journal</title>
+    <style>
+        :root {
+            --bg-base: #1a1a1a;
+            --bg-surface: #282828;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --primary-accent: #ffa116;
+            --primary-hover: #e69114;
+            --border-color: #424242;
+            --error-color: #ef4444;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% -20%, #282828 0%, var(--bg-base) 70%);
+        }
+
+        .login-container {
+            background: rgba(40, 40, 40, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+        }
+
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+            color: var(--primary-accent);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #1a1a1a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(255, 161, 22, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.85rem;
+            background: var(--primary-accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            background: var(--primary-hover);
+        }
+
+        .btn-home {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .btn-home:hover {
+            color: var(--text-primary);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="brand-logo">Leet Journal</div>
+        <p class="subtitle">Welcome back. Please sign in.</p>
+
+        <div th:if="${param.error}" class="error-message">
+            Invalid username or password.
+        </div>
+        
+        <div th:if="${param.logout}" class="success-message">
+            You have been logged out.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-input" required autofocus>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Sign in</button>
+        </form>
+
+        <a href="http://localhost:9000/" class="btn-home">
+            &larr; Back to Home
+        </a>
+    </div>
+</body>
+</html>

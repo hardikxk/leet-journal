@@ -4,7 +4,7 @@ spring:
   application:
     name: auth
   datasource:
-    url: jdbc:postgresql://localhost:5432/db
+    url: jdbc:postgresql://localhost:5432/db?options=-c%20timezone=UTC
     username: user
     password: pass
   sql:

@@ -1,0 +1,58 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Leet Journal | Premium DSA Practice"
+  description="A sleek, professional platform for mastering LeetCode patterns and tracking progress."
+>
+  <section class="hero-shell">
+    <div class="hero-copy">
+      <p class="eyebrow">Aesthetic & Powerful</p>
+      <h1>Master DSA with absolute clarity.</h1>
+      <p class="lead">
+        Leet Journal provides a distraction-free, highly structured environment to track your LeetCode solutions, log patterns, and prepare for interviews effectively.
+      </p>
+
+      <div class="pill-row" aria-label="Highlights">
+        <span class="pill">Premium UI</span>
+        <span class="pill">Smart Journaling</span>
+        <span class="pill">AI Integration</span>
+      </div>
+
+      <div class="action-row">
+        <a class="btn btn-primary" href="/login">Create Account</a>
+        <a class="btn btn-secondary" href="#features">Explore Features</a>
+      </div>
+    </div>
+
+    <div class="hero-image-container">
+      <img src="/coding_workspace.png" alt="Aesthetic futuristic coding workspace" />
+    </div>
+  </section>
+
+  <section class="section-stack" id="features">
+    <div class="section-title">
+      <h2>Built for consistency</h2>
+      <p>Everything you need to reinforce patterns and pass technical interviews.</p>
+    </div>
+
+    <section class="grid">
+      <article class="card feature-card">
+        <span class="feature-kicker">Track</span>
+        <h3>Intelligent Progress</h3>
+        <p>Log your solved problems with difficulty tags, completion times, and a clear historical record to ensure you're improving.</p>
+      </article>
+      <article class="card feature-card">
+        <span class="feature-kicker">Journal</span>
+        <h3>Capture Insights</h3>
+        <p>Write down the "aha!" moment for every problem. Don't just memorize solutions—understand the underlying patterns.</p>
+      </article>
+      <article class="card feature-card">
+        <span class="feature-kicker">AI Powered</span>
+        <h3>Gemini Integration</h3>
+        <p>Get stuck? Use the built-in AI assistant to generate hints without giving away the complete solution prematurely.</p>
+      </article>
+    </section>
+  </section>
+</MainLayout>
