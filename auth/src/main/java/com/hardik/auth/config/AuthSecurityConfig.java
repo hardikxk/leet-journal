@@ -38,7 +38,7 @@ class AuthSecurityConfig {
                         .anyRequest().authenticated())
                 .oauth2AuthorizationServer(asc -> asc
                         .oidc(Customizer.withDefaults()))
-                .formLogin(Customizer.withDefaults());
+                .formLogin(form -> form.loginPage("/login").permitAll());
 
         return http.build();
     }

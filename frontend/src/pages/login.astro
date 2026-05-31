@@ -1,0 +1,20 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { oauthAuthorizationUrl } from "../config/urls";
+---
+
+<MainLayout title="Leet Journal | Sign In" description="Secure OAuth2 login">
+  <section class="login-shell">
+    <div class="card login-card">
+      <p class="eyebrow">Welcome Back</p>
+      <h2>Sign in to Leet Journal</h2>
+      <p class="helper">Authenticate seamlessly via our secure OAuth2 Gateway. No passwords to remember.</p>
+
+      <a class="btn btn-primary" href={oauthAuthorizationUrl}>Continue with OAuth2</a>
+      
+      <p class="helper" style="margin-top: 24px; margin-bottom: 0;">
+        By continuing, you agree to our Terms of Service and Privacy Policy.
+      </p>
+    </div>
+  </section>
+</MainLayout>

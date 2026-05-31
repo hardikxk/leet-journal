@@ -6,10 +6,18 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 
+import jakarta.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @SpringBootApplication
 public class AuthApplication {
 
-    static void main(String[] args) {
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    public static void main(String[] args) {
         SpringApplication.run(AuthApplication.class, args);
     }
 

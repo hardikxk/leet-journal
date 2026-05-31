@@ -16,7 +16,7 @@ import static org.springframework.web.servlet.function.RouterFunctions.route;
 @SpringBootApplication
 public class GatewayApplication {
 
-    static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
@@ -60,4 +60,6 @@ public class GatewayApplication {
                 .GET("/code/**", http())
                 .build();
     }
+
+    // Frontend proxy moved to FrontendProxyController
 }

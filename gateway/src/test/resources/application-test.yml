@@ -1,0 +1,24 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          proxy-client-oidc:
+            provider: authserver
+            client-id: client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, profile
+            client-name: proxy-client-oidc
+        provider:
+          authserver:
+            issuer-uri: http://127.0.0.1:8000
+            authorization-uri: http://127.0.0.1:8000/oauth2/authorize
+            token-uri: http://127.0.0.1:8000/oauth2/token
+            jwk-set-uri: http://127.0.0.1:8000/oauth2/jwks
+            user-info-uri: http://127.0.0.1:8000/userinfo
+            user-name-attribute: sub
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration

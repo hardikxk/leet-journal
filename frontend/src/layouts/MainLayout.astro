@@ -1,0 +1,41 @@
+---
+import "../styles/global.css";
+import { gatewayBaseUrl } from "../config/urls";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Leet Journal - Master Data Structures & Algorithms" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="site-header">
+        <a class="brand-lockup" href="/" aria-label="Leet Journal home">
+          <span class="brand-mark">LJ</span>
+          <span>
+            <strong>Leet Journal</strong>
+            <small>DSA Practice & Review</small>
+          </span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          <a href="/">Explore</a>
+          <a href="/login">Sign in</a>
+          <a href={gatewayBaseUrl} target="_blank" rel="noreferrer">Gateway API</a>
+        </nav>
+      </header>
+      <slot />
+    </main>
+  </body>
+</html>
