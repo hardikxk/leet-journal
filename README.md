@@ -67,7 +67,7 @@ The services are intentionally separate so they can be developed, tested, and de
 
 ## Prerequisites
 
-- Java 21 (LTS)
+- Java 25
 - Maven Wrapper or Maven
 - PostgreSQL
 - SMTP credentials for mail delivery
