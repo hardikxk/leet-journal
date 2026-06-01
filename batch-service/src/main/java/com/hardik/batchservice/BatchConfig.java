@@ -52,7 +52,18 @@ public class BatchConfig {
     JdbcBatchItemWriter<Problem> jdbcBatchItemWriter(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<Problem>()
                 .dataSource(dataSource)
-                .sql("INSERT INTO PROBLEM(ID, TITLE, ACCEPTANCE, DIFFICULTY) VALUES (?, ?, ?, ?)")
+                .sql("""
+                INSERT INTO PROBLEM(ID, TITLE, ACCEPTANCE, DIFFICULTY)
+                VALUES (?, ?, ?, ?)                                                                                                                    \s
+                ON CONFLICT (ID) DO UPDATE SET
+                    TITLE = EXCLUDED.TITLE,                                                                                                                   \s
+                    ACCEPTANCE = EXCLUDED.ACCEPTANCE,
+                    DIFFICULTY = EXCLUDED.DIFFICULTY
+                WHERE PROBLEM.TITLE != EXCLUDED.TITLE
+                    OR PROBLEM.ACCEPTANCE != EXCLUDED.ACCEPTANCE
+                    OR PROBLEM.DIFFICULTY != EXCLUDED.DIFFICULTY
+                """)
+                .assertUpdates(false)
                 .itemPreparedStatementSetter((item, ps) -> {
                     ps.setInt(1, item.id());
                     ps.setString(2, item.title());
