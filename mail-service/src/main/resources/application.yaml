@@ -15,3 +15,5 @@ spring:
           starttls:
             enable: true
             required: true
+mail:
+  sender: ${MAIL_SENDER:hardikkumar0005@gmail.com}
