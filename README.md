@@ -153,7 +153,3 @@ Contributions are welcome. If you are planning a larger change, open an issue fi
 - Keep controllers thin and push business logic into services.
 - Prefer explicit configuration in the service `application.yml` files.
 - Avoid introducing unnecessary dependencies unless they materially improve the codebase.
-
-## Project Status
-
-This project is under active development and is intended to grow as an open source learning platform for LeetCode practice and DSA tooling.
