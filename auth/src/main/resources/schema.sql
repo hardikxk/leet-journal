@@ -28,7 +28,8 @@ create table if not exists users
 (
     username varchar(200) not null primary key,
     password varchar(500) not null,
-    enabled  boolean      not null
+    enabled  boolean      not null,
+    email    varchar(200)
 );
 
 create table if not exists authorities

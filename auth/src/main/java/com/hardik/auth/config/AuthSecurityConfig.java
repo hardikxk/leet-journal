@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.client.RestClient;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -29,8 +30,8 @@ import java.util.UUID;
 @EnableWebSecurity
 class AuthSecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) {
+        @Bean
+        SecurityFilterChain securityFilterChain(HttpSecurity http, MailOttSuccessHandler mailOttSuccessHandler) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -38,7 +39,10 @@ class AuthSecurityConfig {
                         .anyRequest().authenticated())
                 .oauth2AuthorizationServer(asc -> asc
                         .oidc(Customizer.withDefaults()))
-                .formLogin(Customizer.withDefaults());
+            .formLogin(Customizer.withDefaults())
+            .oneTimeTokenLogin(ott -> ott
+                .tokenGenerationSuccessHandler(mailOttSuccessHandler)
+            );
 
         return http.build();
     }
@@ -90,7 +94,12 @@ class AuthSecurityConfig {
     }
 
     @Bean
-    ApplicationRunner userRunner(UserDetailsManager  userDetailsManager){
+    RestClient.Builder restClientBuilder() {
+        return RestClient.builder();
+    }
+
+    @Bean
+    ApplicationRunner userRunner(UserDetailsManager userDetailsManager, JdbcTemplate jdbcTemplate){
         return _ -> {
 
             var users = Map.of(
@@ -106,6 +115,7 @@ class AuthSecurityConfig {
                             .roles("USER")
                             .build();
                     userDetailsManager.createUser(user);
+                    jdbcTemplate.update("UPDATE users SET email = ? WHERE username = ?", un + "@gmail.com", un);
                 }
             });
         };
