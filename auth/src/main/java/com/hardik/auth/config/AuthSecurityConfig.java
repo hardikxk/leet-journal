@@ -1,5 +1,6 @@
 package com.hardik.auth.config;
 
+import com.hardik.auth.filter.IdempotencyFilter;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -29,10 +31,18 @@ import java.util.UUID;
 @EnableWebSecurity
 class AuthSecurityConfig {
 
+    private final IdempotencyFilter idempotencyFilter;
+
+    AuthSecurityConfig(IdempotencyFilter idempotencyFilter) {
+        this.idempotencyFilter = idempotencyFilter;
+    }
+
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                // Run idempotency check before Spring Security's own auth filter.
+                .addFilterBefore(idempotencyFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register").permitAll()
                         .anyRequest().authenticated())
@@ -52,7 +62,7 @@ class AuthSecurityConfig {
     ApplicationRunner clientRunner(RegisteredClientRepository registeredClientRepository) {
         return _ -> {
             var clientId = "client";
-            if(registeredClientRepository.findByClientId(clientId) == null){
+            if (registeredClientRepository.findByClientId(clientId) == null) {
                 registeredClientRepository.save(
                         RegisteredClient
                                 .withId(UUID.randomUUID().toString())
@@ -80,26 +90,25 @@ class AuthSecurityConfig {
     }
 
     @Bean
-    JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource){
+    JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
-    ApplicationRunner userRunner(UserDetailsManager  userDetailsManager){
+    ApplicationRunner userRunner(UserDetailsManager userDetailsManager) {
         return _ -> {
-
             var users = Map.of(
                     "xane", "pass",
                     "sim", "pass",
-                    "hardik","pass"
+                    "hardik", "pass"
             );
             users.forEach((un, pw) -> {
-                if(!userDetailsManager.userExists(un)){
+                if (!userDetailsManager.userExists(un)) {
                     var user = User
                             .withUsername(un)
                             .password(passwordEncoder().encode(pw))
