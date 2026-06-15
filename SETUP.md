@@ -82,7 +82,17 @@ GOOGLE_CLIENT_SECRET=your_client_secret
 
 ---
 
-## Running Services
+## Running Services with Docker Compose (Recommended)
+
+You can run the entire application stack including the PostgreSQL database using Docker Compose. Ensure you have set the API keys as environment variables locally.
+
+```bash
+docker compose up --build
+```
+
+---
+
+## Running Services Manually
 
 Open a separate terminal for each service before running them.
 

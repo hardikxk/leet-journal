@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: leet-journal-db
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth:
+    build:
+      context: ./auth
+      dockerfile: ../Dockerfile
+    container_name: auth-service
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: ../Dockerfile
+    container_name: gateway-service
+    ports:
+      - "9000:9000"
+    depends_on:
+      - auth
+
+  problems-service:
+    build:
+      context: ./problems-service
+      dockerfile: ../Dockerfile
+    container_name: problems-service
+    ports:
+      - "8001:8001"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://auth:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  mail-service:
+    build:
+      context: ./mail-service
+      dockerfile: ../Dockerfile
+    container_name: mail-service
+    ports:
+      - "8002:8002"
+    depends_on:
+      - auth
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: ../Dockerfile
+    container_name: ai-service
+    ports:
+      - "8003:8003"
+    environment:
+      - GOOGLE_GENAI_API_KEY=${GOOGLE_GENAI_API_KEY:-}
+    depends_on:
+      - auth
+
+  batch-service:
+    build:
+      context: ./batch-service
+      dockerfile: ../Dockerfile
+    container_name: batch-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
