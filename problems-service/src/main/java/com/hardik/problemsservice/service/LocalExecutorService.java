@@ -20,7 +20,13 @@ public class LocalExecutorService {
 
             String output = new String(process.getInputStream().readAllBytes());
 
-            process.waitFor();
+            // Set a timeout of 5 seconds to handle potential infinite loops
+            boolean finished = process.waitFor(5, java.util.concurrent.TimeUnit.SECONDS);
+
+            if (!finished) {
+            process.destroyForcibly(); // Force stop
+            return "Execution Failed: Time Limit Exceeded (Timeout)";
+        }
 
             return output;
         }
