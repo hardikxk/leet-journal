@@ -60,4 +60,15 @@ public class GatewayApplication {
                 .GET("/code/**", http())
                 .build();
     }
+
+    @Bean
+    RouterFunction<ServerResponse> userProblemsRoute() {
+        return route()
+                .before(BeforeFilterFunctions.uri("http://localhost:8001/"))
+                .filter(TokenRelayFilterFunctions.tokenRelay())
+                .GET("/user-problems/**", http())
+                .POST("/user-problems/**", http())
+                .PATCH("/user-problems/**", http())
+                .build();
+    }
 }
