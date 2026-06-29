@@ -92,9 +92,10 @@ PostgreSQL connection defaults used by the services point to `jdbc:postgresql://
 
 ## Running Locally
 You will need a PostgreSQL database running for the application. Best way to do this is to run a container using Docker / Podman and configuring your environment variables. By default the application expects the container on port 5432 with the following config:
-Database name -> db
-Username -> user
-Password -> pass
+
+- **Database name:** `db`
+- **Username:** `user`
+- **Password:** `pass`
 
 
 Start the services in this order (to prevent unnecessary errors):
