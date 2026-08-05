@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: mail-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8000
   mail:
     host: smtp.gmail.com
     port: 587

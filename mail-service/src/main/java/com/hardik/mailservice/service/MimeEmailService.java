@@ -2,6 +2,8 @@ package com.hardik.mailservice.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,11 @@ public class MimeEmailService {
             message.setFrom("hardikkumar0005@gmail.com");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text, true);
+            
+            PolicyFactory policy = Sanitizers.FORMATTING.and(Sanitizers.LINKS).and(Sanitizers.BLOCKS).and(Sanitizers.STYLES);
+            String safeText = policy.sanitize(text);
+            
+            helper.setText(safeText, true);
 
             mailSender.send(message);
         }
